@@ -17,9 +17,9 @@ class GameWindow : public Gosu::Window
 public:
 	Gosu::Image bild;
 	GameWindow()
-		: Window(1920, 1080)
+		: Window(800, 600, true)
 	{
-		set_caption("PAPER.IO");
+		set_caption("Gosu Tutorial Game mit Git");
 	}
 
 	// wird bis zu 60x pro Sekunde aufgerufen.
@@ -27,7 +27,6 @@ public:
 	// dann werden `draw` Aufrufe ausgelassen und die Framerate sinkt
 	void draw() override
 	{
-		// Bei Lukas geht's
 	}
 
 	// Wird 60x pro Sekunde aufgerufen
