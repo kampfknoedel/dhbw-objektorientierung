@@ -27,6 +27,7 @@ public:
 	// dann werden `draw` Aufrufe ausgelassen und die Framerate sinkt
 	void draw() override
 	{
+		// Bei Lukas geht's
 	}
 
 	// Wird 60x pro Sekunde aufgerufen
