@@ -67,16 +67,16 @@ public:
 			p1.richtung = 1;
 			p2.richtung = 2;
 		}
-		if (input().down(Gosu::KB_D)) {
+		if (input().down(Gosu::KB_D) & p1.richtung != 2) {
 			p1.richtung = 1;
 		}
-		if (input().down(Gosu::KB_A)) {
+		if (input().down(Gosu::KB_A) & p1.richtung != 1) {
 			p1.richtung = 2;
 		}
-		if (input().down(Gosu::KB_W)) {
+		if (input().down(Gosu::KB_W) & p1.richtung != 4) {
 			p1.richtung = 3;
 		}
-		if (input().down(Gosu::KB_S)) {
+		if (input().down(Gosu::KB_S) & p1.richtung != 3) {
 			p1.richtung = 4;
 		}
 		switch (p1.richtung)
@@ -86,16 +86,16 @@ public:
 		case 3: p1.fahren_oben(); break;
 		case 4: p1.fahren_unten(); break;
 		}
-		if (input().down(Gosu::KB_RIGHT)) {
+		if (input().down(Gosu::KB_RIGHT) & p1.richtung != 2) {
 			p2.richtung = 1;
 		}
-		if (input().down(Gosu::KB_LEFT)) {
+		if (input().down(Gosu::KB_LEFT) & p1.richtung != 1) {
 			p2.richtung = 2;
 		}
-		if (input().down(Gosu::KB_UP)) {
+		if (input().down(Gosu::KB_UP) & p1.richtung != 4) {
 			p2.richtung = 3;
 		}
-		if (input().down(Gosu::KB_DOWN)) {
+		if (input().down(Gosu::KB_DOWN) & p1.richtung != 3) {
 			p2.richtung = 4;
 		}
 		switch (p2.richtung)
