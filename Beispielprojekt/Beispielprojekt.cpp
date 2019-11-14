@@ -44,78 +44,96 @@ public:
 
 	zustand kaestle[61][33];
 	
+	enum zustand_chapter {
+		startseite,
+		spiel,
+		ende,
+	};
 	
-		
+	zustand_chapter chapter;
 	
 	void draw() override
 	{
 		// Notizen: Bildbereich: 1830x990 pixel 
 		// Bei 30x30 Spielergröße 61x33 Spielfelder 
 		// Rand: 45x45
-
-		Gosu::Graphics::draw_rect(
-			0, 0, 1920, 1080, Gosu::Color::GRAY,
-			0.0
-		);
-		//Gosu::Graphics::draw_rect(
-		//	45, 45,	1830, 990, Gosu::Color::BLACK,
-		//	0.0
-		//);
 		
-		for (int i = 0; i < 61; ++i) {
-			for (int j = 0; j < 33; ++j)
-			{
-				if (kaestle[i][j] == frei) {
-					Gosu::Graphics::draw_rect(
-						(45 + (i+1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::BLACK,
-						0.0
-					);
-				}
-				if (kaestle[i][j] == p1_spur) {
-					Gosu::Graphics::draw_rect(
-						(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0xFA, 0x58, 0x58),
-						0.0
-					);
-				}
-				if (kaestle[i][j] == p1_feld) {
-					Gosu::Graphics::draw_rect(
-						(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0xFF, 0x00, 0x00),
-						0.0
-					);
-				}
-				if (kaestle[i][j] == p2_spur) {
-					Gosu::Graphics::draw_rect(
-						(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0x58, 0x58, 0xFA),
-						0.0
-					);
-				}
-				if (kaestle[i][j] == p2_feld) {
-					Gosu::Graphics::draw_rect(
-						(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0x00, 0x00, 0xFF),
-						0.0
-					);
+		if (chapter == startseite) {
+			Gosu::Graphics::draw_rect(
+				0, 0, 1920, 1080, Gosu::Color::YELLOW,
+				0.0
+			);
+		}
+
+		if (chapter == spiel) {
+
+
+			Gosu::Graphics::draw_rect(
+				0, 0, 1920, 1080, Gosu::Color::GRAY,
+				0.0
+			);
+
+			for (int i = 0; i < 61; ++i) {
+				for (int j = 0; j < 33; ++j)
+				{
+					if (kaestle[i][j] == frei) {
+						Gosu::Graphics::draw_rect(
+							(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::BLACK,
+							0.0
+						);
+					}
+					if (kaestle[i][j] == p1_spur) {
+						Gosu::Graphics::draw_rect(
+							(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0xFA, 0x58, 0x58),
+							0.0
+						);
+					}
+					if (kaestle[i][j] == p1_feld) {
+						Gosu::Graphics::draw_rect(
+							(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0xFF, 0x00, 0x00),
+							0.0
+						);
+					}
+					if (kaestle[i][j] == p2_spur) {
+						Gosu::Graphics::draw_rect(
+							(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0x58, 0x58, 0xFA),
+							0.0
+						);
+					}
+					if (kaestle[i][j] == p2_feld) {
+						Gosu::Graphics::draw_rect(
+							(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0x00, 0x00, 0xFF),
+							0.0
+						);
+					}
 				}
 			}
+
+			Gosu::Graphics::draw_rect(
+				p1.pos_x, p1.pos_y, 30, 30, Gosu::Color::RED,
+				0.0
+			);
+			Gosu::Graphics::draw_rect(
+				p2.pos_x, p2.pos_y, 30, 30, Gosu::Color::BLUE,
+				0.0
+			);
 		}
-		
-		Gosu::Graphics::draw_rect(
-			p1.pos_x, p1.pos_y, 30, 30, Gosu::Color::RED,
-			0.0
-		);
-		Gosu::Graphics::draw_rect(
-			p2.pos_x, p2.pos_y, 30, 30, Gosu::Color::BLUE,
-			0.0
-		);
-		
+		if (chapter == ende) {
+			Gosu::Graphics::draw_rect(
+				0, 0, 1920, 1080, Gosu::Color::FUCHSIA,
+				0.0
+			);
+		}
 	}
 
 	// Wird 60x pro Sekunde aufgerufen
 	void update() override
 	{
-		if (start == 0) {
+		bool esc;
+
+		if (chapter == startseite) {
 			p1.field_to_pixel(5, 17);
 			p2.field_to_pixel(56, 17);
-			start = 1;
 
 			p1.richtung = 1;
 			p2.richtung = 2;
@@ -126,66 +144,87 @@ public:
 					kaestle[i][j] = frei;
 				}
 			}
-
-
+			if (input().down(Gosu::KB_SPACE)) {
+				chapter = spiel;
+			}
 		}
 
-		
+		if (chapter == spiel) {
+			
+			//Schalter von Player 1 abfragen
+			if (input().down(Gosu::KB_D) & p1.richtung != 2) {
+				p1.richtung = 1;
+			}
+			if (input().down(Gosu::KB_A) & p1.richtung != 1) {
+				p1.richtung = 2;
+			}
+			if (input().down(Gosu::KB_W) & p1.richtung != 4) {
+				p1.richtung = 3;
+			}
+			if (input().down(Gosu::KB_S) & p1.richtung != 3) {
+				p1.richtung = 4;
+			}
+			// Schalter von Player 2 abfragen
+			if (input().down(Gosu::KB_RIGHT) & p2.richtung != 2) {
+				p2.richtung = 1;
+			}
+			if (input().down(Gosu::KB_LEFT) & p2.richtung != 1) {
+				p2.richtung = 2;
+			}
+			if (input().down(Gosu::KB_UP) & p2.richtung != 4) {
+				p2.richtung = 3;
+			}
+			if (input().down(Gosu::KB_DOWN) & p2.richtung != 3) {
+				p2.richtung = 4;
+			}
+
+			if (input().down(Gosu::KB_ESCAPE)) {
+
+				esc = true;
+				chapter = ende;
+			}
+
+			if (p1.in_grid == 0) {
+				p1.richtung_alt = p1.richtung;
+				kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] = p1_spur;
+			}
+
+			switch (p1.richtung_alt)
+			{
+			case 1: p1.fahren_rechts(); break;
+			case 2: p1.fahren_links(); break;
+			case 3: p1.fahren_oben(); break;
+			case 4: p1.fahren_unten(); break;
+			}
 
 
-		//Schalter von Player 1 abfragen
-		if (input().down(Gosu::KB_D) & p1.richtung != 2) {
-			p1.richtung = 1;
-		}
-		if (input().down(Gosu::KB_A) & p1.richtung != 1) {
-			p1.richtung = 2;
-		}
-		if (input().down(Gosu::KB_W) & p1.richtung != 4) {
-			p1.richtung = 3;
-		}
-		if (input().down(Gosu::KB_S) & p1.richtung != 3) {
-			p1.richtung = 4;
-		}
-		// Schalter von Player 2 abfragen
-		if (input().down(Gosu::KB_RIGHT) & p2.richtung != 2) {
-			p2.richtung = 1;
-		}
-		if (input().down(Gosu::KB_LEFT) & p2.richtung != 1) {
-			p2.richtung = 2;
-		}
-		if (input().down(Gosu::KB_UP) & p2.richtung != 4) {
-			p2.richtung = 3;
-		}
-		if (input().down(Gosu::KB_DOWN) & p2.richtung != 3) {
-			p2.richtung = 4;
-		}
-		
-		if (p1.in_grid == 0) {
-			p1.richtung_alt = p1.richtung;
-			kaestle[p1.pos_x - 46][p1.pos_y - 46] = p1_spur;
-		}
 
-		switch (p1.richtung_alt)
-		{
-		case 1: p1.fahren_rechts(); break;
-		case 2: p1.fahren_links(); break;
-		case 3: p1.fahren_oben(); break;
-		case 4: p1.fahren_unten(); break;
-		}
+			if (p2.in_grid == 0) {
+				p2.richtung_alt = p2.richtung;
+				kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] = p2_spur;
+			}
 
-		
-		
-		if (p2.in_grid == 0) {
-			p2.richtung_alt = p2.richtung;
-			kaestle[p2.pos_x - 46][p2.pos_y - 46] = p2_spur;
+			switch (p2.richtung_alt)
+			{
+			case 1: p2.fahren_rechts(); break;
+			case 2: p2.fahren_links(); break;
+			case 3: p2.fahren_oben(); break;
+			case 4: p2.fahren_unten(); break;
+			}
 		}
+		if (chapter == ende) {
 
-		switch (p2.richtung_alt)
-		{
-		case 1: p2.fahren_rechts(); break;
-		case 2: p2.fahren_links(); break;
-		case 3: p2.fahren_oben(); break;
-		case 4: p2.fahren_unten(); break;
+			if (input().down(Gosu::KB_SPACE)) {
+				
+				chapter = startseite;
+			}
+			if (input().down(Gosu::KB_ESCAPE)==0) {
+				bool esc = false;
+			}
+
+    		if ((input().down(Gosu::KB_ESCAPE)) & (esc==false)) {
+				close();
+			}
 		}
 	}
 };
