@@ -37,13 +37,16 @@ public:
 	enum zustand {
 		frei,
 		p1_spur,
-		p1,
+		p1_feld,
 		p2_spur,
-		p2
+		p2_feld
 	};
 
 	zustand kaestle[61][33];
-
+	
+	
+		
+	
 	void draw() override
 	{
 		// Notizen: Bildbereich: 1830x990 pixel 
@@ -54,13 +57,47 @@ public:
 			0, 0, 1920, 1080, Gosu::Color::GRAY,
 			0.0
 		);
-		Gosu::Graphics::draw_rect(
-			45, 45,	1830, 990, Gosu::Color::BLACK,
-			0.0
-		);
-
-
-
+		//Gosu::Graphics::draw_rect(
+		//	45, 45,	1830, 990, Gosu::Color::BLACK,
+		//	0.0
+		//);
+		
+		for (int i = 0; i < 61; ++i) {
+			for (int j = 0; j < 33; ++j)
+			{
+				if (kaestle[i][j] == frei) {
+					Gosu::Graphics::draw_rect(
+						(45 + (i+1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::BLACK,
+						0.0
+					);
+				}
+				if (kaestle[i][j] == p1_spur) {
+					Gosu::Graphics::draw_rect(
+						(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0xFA, 0x58, 0x58),
+						0.0
+					);
+				}
+				if (kaestle[i][j] == p1_feld) {
+					Gosu::Graphics::draw_rect(
+						(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0xFF, 0x00, 0x00),
+						0.0
+					);
+				}
+				if (kaestle[i][j] == p2_spur) {
+					Gosu::Graphics::draw_rect(
+						(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0x58, 0x58, 0xFA),
+						0.0
+					);
+				}
+				if (kaestle[i][j] == p2_feld) {
+					Gosu::Graphics::draw_rect(
+						(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0x00, 0x00, 0xFF),
+						0.0
+					);
+				}
+			}
+		}
+		
 		Gosu::Graphics::draw_rect(
 			p1.pos_x, p1.pos_y, 30, 30, Gosu::Color::RED,
 			0.0
@@ -83,9 +120,17 @@ public:
 			p1.richtung = 1;
 			p2.richtung = 2;
 
+			for (int i = 0; i < 61; ++i) {
+				for (int j = 0; j < 33; ++j)
+				{
+					kaestle[i][j] = frei;
+				}
+			}
+
+
 		}
 
-
+		
 
 
 		//Schalter von Player 1 abfragen
@@ -117,6 +162,7 @@ public:
 		
 		if (p1.in_grid == 0) {
 			p1.richtung_alt = p1.richtung;
+			kaestle[p1.pos_x - 46][p1.pos_y - 46] = p1_spur;
 		}
 
 		switch (p1.richtung_alt)
@@ -131,6 +177,7 @@ public:
 		
 		if (p2.in_grid == 0) {
 			p2.richtung_alt = p2.richtung;
+			kaestle[p2.pos_x - 46][p2.pos_y - 46] = p2_spur;
 		}
 
 		switch (p2.richtung_alt)
@@ -146,6 +193,8 @@ public:
 // C++ Hauptprogramm
 int main()
 {
+	
+
 	GameWindow window;
 	window.show();
 }
