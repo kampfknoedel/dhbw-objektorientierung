@@ -20,16 +20,20 @@ void player::field_to_pixel(int field_x, int field_y)
 void player::fahren_rechts()
 {
 	this->pos_x = this->pos_x +3;
+	this->in_grid = ((pos_x - 16) % 30);
 }
 void player::fahren_links()
 {
 	this->pos_x = this->pos_x - 3;
+	this->in_grid = ((pos_x - 16) % 30);
 }
 void player::fahren_oben()
 {
 	this->pos_y = this->pos_y - 3;
+	this->in_grid = ((pos_y - 16) % 30);
 }
 void player::fahren_unten()
 {
 	this->pos_y = this->pos_y + 3;
+	this->in_grid = ((pos_y - 16) % 30);
 }
