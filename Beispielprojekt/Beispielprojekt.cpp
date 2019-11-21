@@ -9,7 +9,7 @@
 
 #include "Vektor2d.h"
 #include "player.h"
-
+using namespace std;
 // Simulationsgeschwindigkeit
 const double DT = 100.0;
 
@@ -22,6 +22,7 @@ public:
 	Gosu::Image bild;
 	GameWindow()
 		: Window(1920, 1080, true)
+		, font (50)
 	{
 		set_caption("Gosu Tutorial Game mit Git");
 	}
@@ -33,6 +34,8 @@ public:
 	
 	player p1, p2;
 	int start = 0;
+	int winner = 0;
+	
 
 	enum zustand {
 		frei,
@@ -49,9 +52,10 @@ public:
 		spiel,
 		ende,
 	};
-	
 	zustand_chapter chapter;
 	
+	Gosu::Font font;
+
 	void draw() override
 	{
 		// Notizen: Bildbereich: 1830x990 pixel 
@@ -60,9 +64,12 @@ public:
 		
 		if (chapter == startseite) {
 			Gosu::Graphics::draw_rect(
-				0, 0, 1920, 1080, Gosu::Color::YELLOW,
+				0, 0, 1920, 1080, Gosu::Color::GRAY,
 				0.0
 			);
+			font.draw_rel(
+				"Press [RETURN] for Start.",
+				960, 540, 0.0, 0.5, 0.5, 1, 1, Gosu::Color::WHITE);
 		}
 
 		if (chapter == spiel) {
@@ -117,12 +124,29 @@ public:
 				p2.pos_x, p2.pos_y, 30, 30, Gosu::Color::BLUE,
 				0.0
 			);
+
 		}
 		if (chapter == ende) {
 			Gosu::Graphics::draw_rect(
-				0, 0, 1920, 1080, Gosu::Color::FUCHSIA,
+				0, 0, 1920, 1080, Gosu::Color::WHITE,
 				0.0
 			);
+			if (winner == 1) {
+				font.draw_rel(
+					"Rot hat gewonnen!",
+					960, 540, 0.0, 0.5, 0.5, 3, 3, Gosu::Color::RED);
+			}
+			if (winner == 2) {
+				font.draw_rel(
+					"Blau hat gewonnen!",
+					960, 540, 0.0, 0.5, 0.5, 3, 3, Gosu::Color::BLUE);
+			}
+			font.draw_rel(
+				"Press [RETURN] for new game",
+				960, 750, 0.0, 0.5, 0.5, 1, 1, Gosu::Color::BLACK);
+			font.draw_rel(
+				"Press [ESC] for exit.",
+				960, 800, 0.0, 0.5, 0.5, 1, 1, Gosu::Color::BLACK);
 		}
 	}
 
@@ -134,9 +158,12 @@ public:
 		if (chapter == startseite) {
 			p1.field_to_pixel(5, 17);
 			p2.field_to_pixel(56, 17);
-
+			kaestle[4][17] = p1_feld;
+			kaestle[57][17] = p2_feld;
 			p1.richtung = 1;
 			p2.richtung = 2;
+
+			winner = 0;
 
 			for (int i = 0; i < 61; ++i) {
 				for (int j = 0; j < 33; ++j)
@@ -144,7 +171,7 @@ public:
 					kaestle[i][j] = frei;
 				}
 			}
-			if (input().down(Gosu::KB_SPACE)) {
+			if (input().down(Gosu::KB_RETURN)) {
 				chapter = spiel;
 			}
 		}
@@ -177,63 +204,79 @@ public:
 			if (input().down(Gosu::KB_DOWN) & p2.richtung != 3) {
 				p2.richtung = 4;
 			}
-
-			if (input().down(Gosu::KB_ESCAPE)) {
-
-				esc = true;
+			if (input().down(Gosu::KB_SPACE)) {
 				chapter = ende;
 			}
 
-			if (p1.in_grid == 0) {
+			if (p1.in_grid==0) {		// Wenn p1 im Grid ist wird die richtung aktualisiert und das kaestle angemalt.
 				p1.richtung_alt = p1.richtung;
-				kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] = p1_spur;
+				if (kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == frei) {
+					kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] = p1_spur;
+				}
+				if (kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == p2_feld) {
+					kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] = p1_spur;
+				}
+				if (kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == p2_spur) {
+					chapter = ende;
+					winner = 1;
+				}
+				/*if (kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == p1_spur) {
+					chapter = ende;
+					winner = 2;
+				}*/
 			}
 
-			switch (p1.richtung_alt)
-			{
-			case 1: p1.fahren_rechts(); break;
-			case 2: p1.fahren_links(); break;
-			case 3: p1.fahren_oben(); break;
-			case 4: p1.fahren_unten(); break;
-			}
-
-
-
-			if (p2.in_grid == 0) {
+			if (p2.in_grid==0) {		// Wenn p1 im Grid ist wird die richtung aktualisiert und das kaestle angemalt.
 				p2.richtung_alt = p2.richtung;
-				kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] = p2_spur;
+
+				cout << kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] << endl;
+
+				if (kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == frei) {
+					kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] = p2_spur;
+				}
+				if (kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == p1_feld) {
+					kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] = p2_spur;
+				}
+				if (kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == p1_spur) {
+					chapter = ende;
+					winner = 2;
+				}
+				/*if (kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == p2_spur) {
+					chapter = ende;
+					winner = 1;
+				}*/
+
 			}
 
-			switch (p2.richtung_alt)
-			{
-			case 1: p2.fahren_rechts(); break;
-			case 2: p2.fahren_links(); break;
-			case 3: p2.fahren_oben(); break;
-			case 4: p2.fahren_unten(); break;
+			if (p1.fahren() == false) {	// Funktion "fahren()" in der class player aufrufen.
+				chapter = ende;
+				winner = 2;
 			}
+			if (p2.fahren() == false) {	// Funktion "fahren()" in der class player aufrufen.
+				chapter = ende;
+				winner = 1;
+			}
+			
+
 		}
+
 		if (chapter == ende) {
-
-			if (input().down(Gosu::KB_SPACE)) {
-				
-				chapter = startseite;
-			}
-			if (input().down(Gosu::KB_ESCAPE)==0) {
-				bool esc = false;
-			}
-
-    		if ((input().down(Gosu::KB_ESCAPE)) & (esc==false)) {
+			if (input().down(Gosu::KB_ESCAPE)) {
 				close();
 			}
+			if (input().down(Gosu::KB_RETURN)) {
+				chapter = startseite;
+			}
 		}
+			
 	}
+
+
 };
 
 // C++ Hauptprogramm
 int main()
 {
-	
-
 	GameWindow window;
 	window.show();
 }

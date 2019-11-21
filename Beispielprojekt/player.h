@@ -4,17 +4,18 @@ class player
 public:
 	int pos_x;
 	int pos_y;
-	int in_grid = 0;
-
+	bool in_grid = false;
+	bool alive = true;
 	int richtung;		// 1 = rechts; 2 = links; 3 = oben, 4 = unten
 	int richtung_alt;
 
 	void field_to_pixel(int field_x, int field_y);
 
-	void fahren_rechts();
-	void fahren_links();
-	void fahren_oben();
-	void fahren_unten();
+	bool fahren_rechts();
+	bool fahren_links();
+	bool fahren_oben();
+	bool fahren_unten();
+	bool fahren();
 
 	player();
 	~player();
