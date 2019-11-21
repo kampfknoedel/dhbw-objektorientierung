@@ -236,20 +236,57 @@ public:
 							}
 						}
 					}
-					int i = (p1.pos_x - 46) / 30;
-					int j = (p1.pos_y - 46) / 30;
 					
-					if (kaestle[i][j] ==
-
-
-
-
-
-
+					for (int i = 0; i < 61; ++i) {
+						bool bereich=false;
+						int j1=0, j2=0;
+						for (int j = 0; j < 33; ++j)
+						{
+							if (kaestle[i][j] == p1_feld && bereich == true) {
+								j2 = j;
+								bereich = false;
+							}
+							if (kaestle[i][j] == p1_feld && bereich == false) {
+								j1 = j;
+								bereich = true;
+							}
+						}
+						for (int j = j1+1; j < j2; ++j)
+						{
+							kaestle[i][j] = p1_feld;
+						}
+					}
 				}
+				/*if (kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == p1_feld) {
+					bool in_field = false;
+					for (int i = 0; i < 61; ++i) {
+
+						for (int j = 0; j < 33; ++j)
+						{
+							if (kaestle[i][j] == p1_feld) {
+								in_field = false;
+							}
+							if (kaestle[i][j] == p1_spur && in_field == false) {
+								in_field = true;
+								if (kaestle[i][j-1] == p1_spur) {
+									in_field = false;
+								}
+								kaestle[i][j] = p1_feld;
+							}
+							if (in_field == true) {
+								if (kaestle[i][j] == p1_spur) {
+									in_field = false;
+								}
+								kaestle[i][j] = p1_feld;
+							}
+
+
+						}
+					}
+				}*/
 			}
 
-			if (p2.in_grid==0) {		// Wenn p1 im Grid ist wird die richtung aktualisiert und das kaestle angemalt.
+			if (p2.in_grid==0) {		// Wenn p2 im Grid ist wird die richtung aktualisiert und das kaestle angemalt.
 				p2.richtung_alt = p2.richtung;
 
 				cout << kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] << endl;
