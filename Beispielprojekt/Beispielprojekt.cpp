@@ -210,9 +210,6 @@ public:
 
 			if (p1.in_grid==0) {		// Wenn p1 im Grid ist wird die richtung aktualisiert und das kaestle angemalt.
 				p1.richtung_alt = p1.richtung;
-				if (kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == frei) {
-					kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] = p1_spur;
-				}
 				if (kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == p2_feld) {
 					kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] = p1_spur;
 				}
@@ -220,20 +217,19 @@ public:
 					chapter = ende;
 					winner = 1;
 				}
-				/*if (kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == p1_spur) {
+				if (kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == p1_spur) {
 					chapter = ende;
 					winner = 2;
-				}*/
+				}
+				if (kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == frei) {
+					kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] = p1_spur;
+				}
 			}
 
 			if (p2.in_grid==0) {		// Wenn p1 im Grid ist wird die richtung aktualisiert und das kaestle angemalt.
 				p2.richtung_alt = p2.richtung;
 
 				cout << kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] << endl;
-
-				if (kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == frei) {
-					kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] = p2_spur;
-				}
 				if (kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == p1_feld) {
 					kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] = p2_spur;
 				}
@@ -241,10 +237,14 @@ public:
 					chapter = ende;
 					winner = 2;
 				}
-				/*if (kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == p2_spur) {
+				if (kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == p2_spur) {
 					chapter = ende;
 					winner = 1;
-				}*/
+					cout << kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] << endl;
+				}
+				if (kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == frei) {
+					kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] = p2_spur;
+				}
 
 			}
 
