@@ -240,16 +240,18 @@ public:
 					for (int i = 0; i < 61; ++i) {
 						bool bereich=false;
 						int j1 = 0, j2 = 0;
+						int state = 0;
 						for (int j = 0; j < 33; ++j)
 						{
-							if (kaestle[i][j] == p1_feld && bereich == true) {
-								j2 = j;
-								bereich = false;
-								break;
-							}
 							if (kaestle[i][j] == p1_feld && bereich == false) {
 								j1 = j;
 								bereich = true;
+							}
+							if (kaestle[i][j] == p1_feld && bereich == true && state == 1) {
+								j2 = j;
+							}
+							if (bereich == true && state == 0) {
+								state = 1;
 							}
 							
 						}
