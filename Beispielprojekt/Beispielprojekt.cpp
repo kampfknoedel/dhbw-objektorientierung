@@ -158,8 +158,7 @@ public:
 		if (chapter == startseite) {
 			p1.field_to_pixel(5, 17);
 			p2.field_to_pixel(56, 17);
-			kaestle[4][17] = p1_feld;
-			kaestle[57][17] = p2_feld;
+
 			p1.richtung = 1;
 			p2.richtung = 2;
 
@@ -171,6 +170,9 @@ public:
 					kaestle[i][j] = frei;
 				}
 			}
+			kaestle[3][16] = p1_feld;
+			kaestle[56][16] = p2_feld;
+
 			if (input().down(Gosu::KB_RETURN)) {
 				chapter = spiel;
 			}
@@ -210,9 +212,7 @@ public:
 
 			if (p1.in_grid==0) {		// Wenn p1 im Grid ist wird die richtung aktualisiert und das kaestle angemalt.
 				p1.richtung_alt = p1.richtung;
-				if (kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == p2_feld) {
-					kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] = p1_spur;
-				}
+				
 				if (kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == p2_spur) {
 					chapter = ende;
 					winner = 1;
@@ -221,8 +221,31 @@ public:
 					chapter = ende;
 					winner = 2;
 				}
+				if (kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == p2_feld) {
+					kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] = p1_spur;
+				}
 				if (kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == frei) {
 					kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] = p1_spur;
+				}
+				if (kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == p1_feld) {
+					for (int i = 0; i < 61; ++i) {
+						for (int j = 0; j < 33; ++j)
+						{
+							if (kaestle[i][j] == p1_spur) {
+								kaestle[i][j] = p1_feld;
+							}
+						}
+					}
+					int i = (p1.pos_x - 46) / 30;
+					int j = (p1.pos_y - 46) / 30;
+					
+					if (kaestle[i][j] ==
+
+
+
+
+
+
 				}
 			}
 
@@ -230,9 +253,7 @@ public:
 				p2.richtung_alt = p2.richtung;
 
 				cout << kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] << endl;
-				if (kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == p1_feld) {
-					kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] = p2_spur;
-				}
+
 				if (kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == p1_spur) {
 					chapter = ende;
 					winner = 2;
@@ -242,10 +263,12 @@ public:
 					winner = 1;
 					cout << kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] << endl;
 				}
+				if (kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == p1_feld) {
+					kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] = p2_spur;
+				}
 				if (kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == frei) {
 					kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] = p2_spur;
 				}
-
 			}
 
 			if (p1.fahren() == false) {	// Funktion "fahren()" in der class player aufrufen.
