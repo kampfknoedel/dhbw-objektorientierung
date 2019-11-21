@@ -261,7 +261,7 @@ public:
 						}
 					}
 				}
-				/*if (kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == p1_feld) {
+				/*if (kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == p1_feld) {			alte Versuchsversion (mit kleinem Bug)
 					bool in_field = false;
 					for (int i = 0; i < 61; ++i) {
 
@@ -309,6 +309,40 @@ public:
 				}
 				if (kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == frei) {
 					kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] = p2_spur;
+				}
+				if (kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == p2_feld) {
+					for (int i = 0; i < 61; ++i) {
+						for (int j = 0; j < 33; ++j)
+						{
+							if (kaestle[i][j] == p2_spur) {
+								kaestle[i][j] = p2_feld;
+							}
+						}
+					}
+
+					for (int i = 0; i < 61; ++i) {
+						bool bereich = false;
+						int j1 = 0, j2 = 0;
+						int state = 0;
+						for (int j = 0; j < 33; ++j)
+						{
+							if (kaestle[i][j] == p2_feld && bereich == false) {
+								j1 = j;
+								bereich = true;
+							}
+							if (kaestle[i][j] == p2_feld && bereich == true && state == 1) {
+								j2 = j;
+							}
+							if (bereich == true && state == 0) {
+								state = 1;
+							}
+
+						}
+						for (int j = j1 + 1; j < j2; ++j)
+						{
+							kaestle[i][j] = p2_feld;
+						}
+					}
 				}
 			}
 
