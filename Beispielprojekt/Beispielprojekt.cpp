@@ -97,7 +97,7 @@ public:
 					}
 					if (kaestle[i][j] == p1_feld) {
 						Gosu::Graphics::draw_rect(
-							(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0xFF, 0x00, 0x00),
+							(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0xFF, 0x20, 0x20),
 							0.0
 						);
 					}
@@ -109,7 +109,7 @@ public:
 					}
 					if (kaestle[i][j] == p2_feld) {
 						Gosu::Graphics::draw_rect(
-							(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0x00, 0x00, 0xFF),
+							(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0x20, 0x20, 0xFF),
 							0.0
 						);
 					}
