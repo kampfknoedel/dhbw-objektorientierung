@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
-
+#include <sstream>
 #include "Vektor2d.h"
 #include "player.h"
 using namespace std;
@@ -35,7 +35,8 @@ public:
 	player p1, p2;
 	int start = 0;
 	int winner = 0;
-	
+	string score_txt;
+	std::stringstream score_string;
 
 	enum zustand {
 		frei,
@@ -113,7 +114,7 @@ public:
 							0.0
 						);
 					}
-				}
+ 				}
 			}
 
 			Gosu::Graphics::draw_rect(
@@ -124,6 +125,9 @@ public:
 				p2.pos_x, p2.pos_y, 30, 30, Gosu::Color::BLUE,
 				0.0
 			);
+			font.draw_rel(
+				score_txt,
+				960, 20, 0.0, 0.5, 0.5, 1, 1, Gosu::Color::WHITE);
 
 		}
 		if (chapter == ende) {
@@ -147,6 +151,9 @@ public:
 			font.draw_rel(
 				"Press [ESC] for exit.",
 				960, 800, 0.0, 0.5, 0.5, 1, 1, Gosu::Color::BLACK);
+			font.draw_rel(
+				score_txt,
+				960, 300, 0.0, 0.5, 0.5, 1, 1, Gosu::Color::BLACK);
 		}
 	}
 
@@ -229,7 +236,7 @@ public:
 					kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] = p1_spur;
 					p1.last_field_feld = false;
 				}
-				if (kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == p1_feld) {
+				if ((kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == p1_feld) && p1.last_field_feld == false) {
 					for (int i = 0; i < 61; ++i) {
 						for (int j = 0; j < 33; ++j)
 						{
@@ -238,7 +245,6 @@ public:
 							}
 						}
 					}
-					
 					for (int i = 0; i < 61; ++i) {
 						bool bereich=false;
 						int j1 = 0, j2 = 0;
@@ -259,7 +265,9 @@ public:
 						}
 						for (int j = j1+1; j < j2; ++j)
 						{
-							kaestle[i][j] = p1_feld;
+							if (kaestle[i][j] != p2_spur) {
+								kaestle[i][j] = p1_feld;
+							}
 						}
 					}
 					p1.last_field_feld = true;
@@ -315,7 +323,7 @@ public:
 					kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] = p2_spur;
 					p2.last_field_feld = false;
 				}
-				if (kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == p2_feld) {
+				if ((kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == p2_feld) && p2.last_field_feld == false) {
 					for (int i = 0; i < 61; ++i) {
 						for (int j = 0; j < 33; ++j)
 						{
@@ -345,11 +353,38 @@ public:
 						}
 						for (int j = j1 + 1; j < j2; ++j)
 						{
-							kaestle[i][j] = p2_feld;
+							if (kaestle[i][j] != p1_spur) {
+								kaestle[i][j] = p2_feld;
+							}
 						}
 					}
 					p2.last_field_feld = true;
 				}
+				p2.score = 0;
+				p1.score = 0;
+				for (int i = 0; i < 61; ++i) {
+					for (int j = 0; j < 33; ++j)
+					{
+						if (kaestle[i][j] == p2_feld) {
+							p2.score = p2.score + 1;
+						}
+						if (kaestle[i][j] == p1_feld) {
+							p1.score = p1.score + 1;
+						}
+					}
+				}
+				
+				
+				p1.score = p1.score * 100 / (33 * 61);
+				p2.score = p2.score * 100 / (33 * 61);
+
+				//cout << "Player1: " << p1.score << "% Player 2: " << p2.score << "%" << endl;
+				
+				
+				score_txt = "Player1: " + to_string(p1.score) + "%                    Player2: " + to_string(p2.score) + "%";
+				cout << score_txt << endl;
+				//score_txt = score_string.str();
+				
 			}
 
 			if (p1.fahren() == false) {	// Funktion "fahren()" in der class player aufrufen.
@@ -361,7 +396,6 @@ public:
 				winner = 1;
 			}
 			
-
 		}
 
 		if (chapter == ende) {
