@@ -52,7 +52,7 @@ bool player::fahren_rechts()
 {
 	this->pos_x = this->pos_x + 3;
 	this->in_grid = ((pos_x - 16) % 30);
-	if (this->pos_x >= 1846) {
+	if (this->pos_x >= 1876) {
 		return false;
 	}
 	return true;

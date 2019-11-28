@@ -8,6 +8,7 @@ public:
 	bool alive = true;
 	int richtung;		// 1 = rechts; 2 = links; 3 = oben, 4 = unten
 	int richtung_alt;
+	bool last_field_feld = 0;
 
 	void field_to_pixel(int field_x, int field_y);
 

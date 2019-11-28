@@ -91,25 +91,25 @@ public:
 					}
 					if (kaestle[i][j] == p1_spur) {
 						Gosu::Graphics::draw_rect(
-							(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0xFA, 0x58, 0x58),
+							(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0xFA, 0x88, 0x88),
 							0.0
 						);
 					}
 					if (kaestle[i][j] == p1_feld) {
 						Gosu::Graphics::draw_rect(
-							(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0xFF, 0x20, 0x20),
+							(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0xFF, 0x60, 0x60),
 							0.0
 						);
 					}
 					if (kaestle[i][j] == p2_spur) {
 						Gosu::Graphics::draw_rect(
-							(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0x58, 0x58, 0xFA),
+							(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0x88, 0x88, 0xFA),
 							0.0
 						);
 					}
 					if (kaestle[i][j] == p2_feld) {
 						Gosu::Graphics::draw_rect(
-							(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0x20, 0x20, 0xFF),
+							(45 + (i + 1) * 30 - 29), (45 + (j + 1) * 30 - 29), 30, 30, Gosu::Color::Color(0x60, 0x60, 0xFF),
 							0.0
 						);
 					}
@@ -223,9 +223,11 @@ public:
 				}
 				if (kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == p2_feld) {
 					kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] = p1_spur;
+					p1.last_field_feld = false;
 				}
 				if (kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == frei) {
 					kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] = p1_spur;
+					p1.last_field_feld = false;
 				}
 				if (kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == p1_feld) {
 					for (int i = 0; i < 61; ++i) {
@@ -260,6 +262,7 @@ public:
 							kaestle[i][j] = p1_feld;
 						}
 					}
+					p1.last_field_feld = true;
 				}
 				/*if (kaestle[(p1.pos_x - 46) / 30][(p1.pos_y - 46) / 30] == p1_feld) {			alte Versuchsversion (mit kleinem Bug)
 					bool in_field = false;
@@ -289,7 +292,7 @@ public:
 					}
 				}*/
 			}
-
+			
 			if (p2.in_grid==0) {		// Wenn p2 im Grid ist wird die richtung aktualisiert und das kaestle angemalt.
 				p2.richtung_alt = p2.richtung;
 
@@ -306,9 +309,11 @@ public:
 				}
 				if (kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == p1_feld) {
 					kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] = p2_spur;
+					p2.last_field_feld = false;
 				}
 				if (kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == frei) {
 					kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] = p2_spur;
+					p2.last_field_feld = false;
 				}
 				if (kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == p2_feld) {
 					for (int i = 0; i < 61; ++i) {
@@ -343,6 +348,7 @@ public:
 							kaestle[i][j] = p2_feld;
 						}
 					}
+					p2.last_field_feld = true;
 				}
 			}
 
