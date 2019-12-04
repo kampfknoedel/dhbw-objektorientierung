@@ -381,7 +381,7 @@ public:
 				p1.score = p1.score * 100 / (33 * 61);
 				p2.score = p2.score * 100 / (33 * 61);
 
-				//cout << "Player1: " << p1.score << "% Player 2: " << p2.score << "%" << endl;
+				
 				
 				
 				score_txt = "Player1: " + to_string(p1.score) + "%                    Player2: " + to_string(p2.score) + "%";
