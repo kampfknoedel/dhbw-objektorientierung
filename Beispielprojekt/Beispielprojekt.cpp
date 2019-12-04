@@ -164,7 +164,7 @@ public:
 
 		if (chapter == startseite) {
 			p1.field_to_pixel(5, 17);
-			p2.field_to_pixel(56, 17);
+			p2.field_to_pixel(57, 17);
 
 			p1.richtung = 1;
 			p2.richtung = 2;
@@ -178,7 +178,7 @@ public:
 				}
 			}
 			kaestle[3][16] = p1_feld;
-			kaestle[56][16] = p2_feld;
+			kaestle[57][16] = p2_feld;
 
 			if (input().down(Gosu::KB_RETURN)) {
 				chapter = spiel;
@@ -385,7 +385,7 @@ public:
 				
 				
 				score_txt = "Player1: " + to_string(p1.score) + "%                    Player2: " + to_string(p2.score) + "%";
-				cout << score_txt << endl;
+				
 				//score_txt = score_string.str();
 				
 			}
