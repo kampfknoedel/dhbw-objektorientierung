@@ -186,36 +186,40 @@ public:
 		}
 
 		if (chapter == spiel) {
+			if (p1.richtung_alt == p1.richtung) {
+				//Schalter von Player 1 abfragen
+				if (input().down(Gosu::KB_D) & p1.richtung != 2) {
+					p1.richtung = 1;
+				}
+				if (input().down(Gosu::KB_A) & p1.richtung != 1) {
+					p1.richtung = 2;
+				}
+				if (input().down(Gosu::KB_W) & p1.richtung != 4) {
+					p1.richtung = 3;
+				}
+				if (input().down(Gosu::KB_S) & p1.richtung != 3) {
+					p1.richtung = 4;
+				}
+			}
+			if (p2.richtung_alt == p2.richtung) {
+				// Schalter von Player 2 abfragen
+				if (input().down(Gosu::KB_RIGHT) & p2.richtung != 2) {
+					p2.richtung = 1;
+				}
+				if (input().down(Gosu::KB_LEFT) & p2.richtung != 1) {
+					p2.richtung = 2;
+				}
+				if (input().down(Gosu::KB_UP) & p2.richtung != 4) {
+					p2.richtung = 3;
+				}
+				if (input().down(Gosu::KB_DOWN) & p2.richtung != 3) {
+					p2.richtung = 4;
+				}
+				if (input().down(Gosu::KB_SPACE)) {
+					chapter = ende;
+				}
+			}
 			
-			//Schalter von Player 1 abfragen
-			if (input().down(Gosu::KB_D) & p1.richtung != 2) {
-				p1.richtung = 1;
-			}
-			if (input().down(Gosu::KB_A) & p1.richtung != 1) {
-				p1.richtung = 2;
-			}
-			if (input().down(Gosu::KB_W) & p1.richtung != 4) {
-				p1.richtung = 3;
-			}
-			if (input().down(Gosu::KB_S) & p1.richtung != 3) {
-				p1.richtung = 4;
-			}
-			// Schalter von Player 2 abfragen
-			if (input().down(Gosu::KB_RIGHT) & p2.richtung != 2) {
-				p2.richtung = 1;
-			}
-			if (input().down(Gosu::KB_LEFT) & p2.richtung != 1) {
-				p2.richtung = 2;
-			}
-			if (input().down(Gosu::KB_UP) & p2.richtung != 4) {
-				p2.richtung = 3;
-			}
-			if (input().down(Gosu::KB_DOWN) & p2.richtung != 3) {
-				p2.richtung = 4;
-			}
-			if (input().down(Gosu::KB_SPACE)) {
-				chapter = ende;
-			}
 
 			if (p1.in_grid==0) {		// Wenn p1 im Grid ist wird die richtung aktualisiert und das kaestle angemalt.
 				p1.richtung_alt = p1.richtung;
@@ -304,7 +308,7 @@ public:
 			if (p2.in_grid==0) {		// Wenn p2 im Grid ist wird die richtung aktualisiert und das kaestle angemalt.
 				p2.richtung_alt = p2.richtung;
 
-				cout << kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] << endl;
+				
 
 				if (kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == p1_spur) {
 					chapter = ende;
@@ -313,7 +317,6 @@ public:
 				if (kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == p2_spur) {
 					chapter = ende;
 					winner = 1;
-					cout << kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] << endl;
 				}
 				if (kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] == p1_feld) {
 					kaestle[(p2.pos_x - 46) / 30][(p2.pos_y - 46) / 30] = p2_spur;
